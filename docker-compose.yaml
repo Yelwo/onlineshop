@@ -1,0 +1,37 @@
+services:
+  pricing:
+    build:
+      context: ./pricing
+    env_file:
+      - path: .env
+        required: false
+    ports:
+      - "80:80"   # Graftcode Gateway (websocket)
+      - "81:81"   # Graftcode Vision
+    healthcheck:
+      # Healthy once the gateway accepts connections on its WS port; the GUID is
+      # logged and module analysis completes during this startup phase.
+      test: ["CMD", "python", "-c", "import socket; socket.create_connection(('localhost', 80), 2).close()"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+      start_period: 5s
+    networks:
+      - onlineshop
+
+  orders:
+    build:
+      context: ./orders
+      args:
+        GRAFT_INDEX_URL: "${GRAFT_INDEX_URL:-}"
+    ports:
+      - "8000:8000"
+    depends_on:
+      pricing:
+        condition: service_healthy
+    networks:
+      - onlineshop
+
+networks:
+  onlineshop:
+    driver: bridge

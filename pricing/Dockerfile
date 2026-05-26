@@ -2,9 +2,8 @@ FROM python:3.10-bookworm
 
 WORKDIR /usr/app
 
-COPY ./main.py /usr/app/onlineshop/
-COPY ./pyproject.toml /usr/app/onlineshop/
-COPY ./.env /usr/app/.env
+COPY ./pricing.py /usr/app/pricing/
+COPY ./pyproject.toml /usr/app/pricing/
 
 ARG TARGETARCH
 
@@ -19,4 +18,4 @@ RUN apt-get update \
 EXPOSE 80
 EXPOSE 81
 
-CMD ["gg", "--modules", "./onlineshop/"]
+CMD ["gg", "--modules", "./pricing/"]

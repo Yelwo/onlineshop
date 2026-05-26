@@ -1,0 +1,23 @@
+[project]
+name = "pricing"
+version = "0.1.0"
+requires-python = ">=3.10"
+description = "Pricing service - exposed via Graftcode"
+dependencies = []
+
+[project.optional-dependencies]
+test = [
+    "pytest>=8",
+    "factory-boy>=3.3",
+]
+
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+py-modules = ["pricing"]
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]
