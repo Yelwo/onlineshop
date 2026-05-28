@@ -1,7 +1,17 @@
+import json
+
 import pytest
 
 import pricing
 from factories import ProductFactory
+
+
+@pytest.fixture(autouse=True)
+def _reset_rules(monkeypatch):
+    """Each test starts from a freshly recompiled set of default rules."""
+    monkeypatch.setattr(pricing.PricingService, "_RULES", [])
+    for src in pricing._DEFAULT_RULES_SRC:
+        pricing.PricingService.add_rule(json.dumps(src))
 
 
 @pytest.fixture
